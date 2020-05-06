@@ -36,7 +36,7 @@ parameters_values %>% select(name) %>% unlist() %>% unique() %>% unname()
 parameters_values %>% filter(name == "serial interval") %>%
     ggplot(aes(x=id))+ geom_pointrange(aes(y=value,ymin = lower_bound , ymax = upper_bound)) +
     theme_bw() + ggtitle("Distribution of Serial Intervals from Publication")
-paste0("mean of means:serial interval = ", mean(parameters_values$value[parameters_values$name == "incubation period"]))
+paste0("mean of means:serial interval = ", mean(parameters_values$value[parameters_values$name == "serial interval"]))
 
 #  -------------------------------------------------------------
 # NATIONAL Re -------------------------------------------------------------
@@ -60,7 +60,7 @@ plot(result_national)
 # DISTRICT/STATE -------------------------------------------------------------
 #  -------------------------------------------------------------
 
-data_incidence_state <- data_india_raw %>% filter(detecteddistrict == "Chennai") %>%
+data_incidence_state <- data_india_raw %>% filter(detectedstate == "Kerala") %>%
     group_by(dateannounced) %>%
     summarize(I = length(dateannounced)) %>%
     transmute(dates = dateannounced, I) %>%
@@ -72,3 +72,4 @@ result_state <- estimate_R(incid = as.data.frame(data_incidence_state),
                   method = "parametric_si",
                   config = make_config(list(mean_si = 7,std_si = 3)))
 plot(result_state)
+

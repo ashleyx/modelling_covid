@@ -20,7 +20,6 @@ parameters
 pop_size <- 1.4E9
 social_dist <- 1
 
-
 state <- c(S = pop_size,
            E = 1,
            I = 0,
@@ -30,9 +29,8 @@ state <- c(S = pop_size,
 
 seird <- function(t, state , parameters){
     with(as.list(c(state,parameters)),{
-
-        if(t > shift + 20){
-            social_dist <- 0.55
+        if(t > (shift + 20)){
+            social_dist <- 0.1
         }
 
         dS <- - S * I * beta * social_dist / pop_size

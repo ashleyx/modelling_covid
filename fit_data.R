@@ -23,14 +23,23 @@ out_fitted_old <- out %>% filter(time >= shift) %>%
     mutate(date = data_india$date[1] + time - shift) %>%
     transmute(date,
               Deceased = D,
-              Confirmed = I+ H) %>%
+              Confirmed = I+ H + R) %>%
     melt(id.vars = "date") %>% rename(predicted = value, status = variable) %>%
-    left_join(data_india, by = c("date" = "date", "status" = "status")) %>% na.omit()
-head(out_fitted)
+    left_join(data_india, by = c("date" = "date", "status" = "status"))
 
-out_fitted_old %>% filter(status == "Deceased") %>%
+out_fitted_old %>% na.omit() %>%
+    filter(status == "Deceased") %>%
 ggplot(aes(x = date , color = status))+
     geom_line(aes(y=count, linetype = "actual")) +
     geom_line(aes(y = predicted, linetype = "predicted")) +
-    scale_y_log10()
+    # scale_y_log10() +
+    theme_bw()
+
+out_fitted_old %>%
+    filter(date < "2020-06-01") %>%
+    ggplot(aes(x = date , color = status))+
+    geom_line(aes(y=count, linetype = "actual")) +
+    geom_line(aes(y = predicted, linetype = "predicted")) +
+    scale_y_log10() +
+    theme_bw()
 
